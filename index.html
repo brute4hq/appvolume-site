@@ -1,148 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PerApp Mixer for macOS</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AppVolume for macOS</title>
+  <meta name="description"
+        content="AppVolume is a free, lightweight per-application volume controller for macOS. Adjust sound levels per app with a fast, low-latency menu bar interface. Created by brute4.">
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      padding: 2rem 1rem;
-      background-color: #f9fafb;
-      color: #222;
-      line-height: 1.6;
+    :root {
+      --bg-top: #252a36;
+      --bg-mid: #1c2028;
+      --bg-bottom: #14171f;
+      --fg: #f5f5f5;
+      --muted: #a0a5ad;
+
+      --card-top: #101215;
+      --card-bottom: #181b1f;
+      --card-border: #2a2e36;
+
+      --cta-top: #101215;
+      --cta-bottom: #181b1f;
+      --cta-border: #2a2e36;
+      --cta-shadow: rgba(0, 0, 0, 0.4);
+
+      --button-bg1: #3a3f49;
+      --button-bg2: #2a2e38;
+      --button-hover1: #475060;
+      --button-hover2: #343945;
+      --button-border: #555;
+      --button-border-hover: #6f7a88;
+
+      --table-alt: rgba(255, 255, 255, 0.03);
+      --table-hover: rgba(255, 255, 255, 0.06);
+      --divider: #2a2e36;
+
+      --footer-bg: #0d0f14;
+      --footer-divider: rgba(255, 255, 255, 0.05);
+
+      --radius: 14px;
+      --max-width: 900px;
     }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, var(--bg-top) 0%, var(--bg-mid) 40%, var(--bg-bottom) 100%);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      letter-spacing: 0.01em;
+    }
+
     header {
       text-align: center;
-      margin-bottom: 2rem;
+      padding: 3.5rem 1rem 1.5rem;
     }
+
     h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.3rem;
+      font-size: 2.4rem;
+      margin: 0.3rem 0;
+      font-weight: 700;
+      background: linear-gradient(90deg, #c8cdd3, #f0f0f0, #c8cdd3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+
     h2 {
-      margin-top: 2rem;
+      font-weight: 600;
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 5rem 0 1rem;
+      border-bottom: 1px solid var(--divider);
+      padding-bottom: 0.3rem;
+      color: #e5e7eb;
     }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      max-width: 680px;
-      margin: 1rem auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+    h3 {
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 0;
+      font-size: 1.05rem;
     }
-    table th, table td {
-      border-bottom: 1px solid #eee;
-      padding: 0.6rem 0.8rem;
-      text-align: left;
-    }
-    table tr:last-child td {
-      border-bottom: none;
-    }
+
     main {
-      max-width: 700px;
+      flex: 1;
+      width: 100%;
+      max-width: var(--max-width);
       margin: 0 auto;
-      background: white;
-      border-radius: 10px;
-      padding: 2rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 0 1rem 4rem;
     }
-    form {
-      margin-top: 1rem;
+
+    .card {
+      background: linear-gradient(145deg, var(--card-top), var(--card-bottom));
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
-    input[type="email"] {
-      padding: 0.5em;
-      width: 240px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-top: 0.5em;
-    }
-    button {
-      padding: 0.5em 1em;
-      margin-left: 0.5em;
-      background-color: #007aff;
-      color: white;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-    }
-    footer {
+
+    .card p { margin: 1rem 0; }
+
+    .status {
       text-align: center;
-      margin-top: 3rem;
+      margin: 2rem auto 0.25rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 600px;
+    }
+
+    .cta {
+      text-align: center;
+      background: linear-gradient(145deg, var(--cta-top), var(--cta-bottom));
+      color: var(--fg);
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--cta-border);
+      box-shadow: 0 2px 8px var(--cta-shadow);
+      margin: 1.5rem auto 0;
+    }
+
+    .cta h2 {
+      color: #f0f0f0;
+      margin-bottom: 0.4rem;
+      border: none;
+      font-size: 1.15rem;
+    }
+
+    .cta p {
+      color: #ccc;
+      margin: 0.4rem auto 1rem;
       font-size: 0.9rem;
-      color: #666;
+      line-height: 1.5;
+      max-width: 640px;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 0.6rem;
+    }
+
+    input[type="email"] {
+      padding: 0.7em 1em;
+      border-radius: var(--radius);
+      border: 1px solid var(--button-border);
+      background: #1a1d24;
+      color: #fff;
+      flex: 1;
+      min-width: 240px;
+      font-size: 0.95rem;
+    }
+
+    input[type="email"]::placeholder { color: #888; }
+
+    button {
+      background: linear-gradient(90deg, var(--button-bg1), var(--button-bg2));
+      color: #fff;
+      border: 1px solid var(--button-border);
+      border-radius: var(--radius);
+      padding: 0.75em 1.4em;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 0 rgba(100,150,255,0);
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, var(--button-hover1), var(--button-hover2));
+      border-color: var(--button-border-hover);
+      box-shadow: 0 0 10px rgba(100,150,255,0.25);
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 0 6px rgba(100,150,255,0.15);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+    }
+
+    th {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-bottom: 1px solid var(--divider);
+      font-weight: 500;
+    }
+
+    tr:nth-child(even) td { background: var(--table-alt); }
+    tr:hover td { background: var(--table-hover); }
+
+    td:first-child {
+      width: 32%;
+      white-space: nowrap;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    footer {
+      background: var(--footer-bg);
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.85rem;
+      color: #888;
+      border-top: 1px solid var(--footer-divider);
+    }
+
+    footer strong { color: #ccc; }
+
+    @media (max-width: 700px) {
+      h1 { font-size: 2rem; }
+      .card, .cta { padding: 1.3rem; }
+      h2 { font-size: 1.1rem; margin-top: 2rem; }
+      .cta p {
+        font-size: 0.88rem;
+        line-height: 1.45;
+        max-width: 90%;
+      }
     }
   </style>
 </head>
+
 <body>
+<header>
+  <h1>AppVolume for macOS</h1>
+  <h3>Free, lightweight per-application volume control for everyone</h3>
+</header>
 
-  <header>
-    <h1>🔊 PerApp Mixer for macOS</h1>
-    <h3>Free, lightweight per-application volume control for everyone</h3>
-    <p><strong>Status:</strong> 🚧 In active development — join the waitlist below to get notified when the first beta drops.</p>
-  </header>
+<main>
+  <h2>What is AppVolume?</h2>
+  <div class="card">
+    <p>
+      AppVolume is a <strong>clean, fast, and low-latency audio mixer for macOS</strong> that lets you control
+      the volume of each app individually.
+    </p>
+    <p>
+      No subscriptions. No clutter. Just intuitive, per-app sound control right from your menu bar.
+    </p>
+    <p>
+      Balance background music with calls, quiet noisy browser tabs, or fine-tune your workspace sound — all from
+      one simple place.
+    </p>
+  </div>
 
-  <main>
-    <section>
-      <h2>🎯 What is PerApp Mixer?</h2>
-      <p>
-        PerApp Mixer is a <strong>simple, fast, and low-latency audio mixer for macOS</strong>
-        that finally lets you control the volume of each app individually.
-        No subscriptions, no bloat — just clean, intuitive sound control right from your menu bar.
-      </p>
-      <p>
-        Whether you’re balancing background music with a video call,
-        turning down a noisy browser tab, or keeping notifications quiet while watching a movie —
-        <strong>PerApp Mixer</strong> gives you precise, per-app volume control that works the way it should.
-      </p>
-    </section>
+  <div class="status">
+    <p><strong>Status:</strong> 🚧 In active development — very early stages.</p>
+  </div>
 
-    <section>
-      <h2>✨ MVP Features (in development)</h2>
-      <table>
-        <tr><td>🎚 <b>Per-app volume & mute</b></td><td>Adjust and mute any app individually.</td></tr>
-        <tr><td>⚡ <b>Low latency</b></td><td>Designed for responsiveness — minimal delay between apps and output.</td></tr>
-        <tr><td>🎵 <b>App bypass</b></td><td>Keep certain apps (like DAWs or games) connected directly for zero latency.</td></tr>
-        <tr><td>🧠 <b>Smart detection</b></td><td>Shows only apps that are currently playing sound.</td></tr>
-        <tr><td>💾 <b>Persistent settings</b></td><td>Remembers your volume preferences per app.</td></tr>
-        <tr><td>🖥 <b>Menu-bar UI</b></td><td>One click to open, adjust sliders, and close — fast and unobtrusive.</td></tr>
-        <tr><td>🔌 <b>Virtual audio device</b></td><td>Appears in macOS System Settings → Sound → Output.</td></tr>
-        <tr><td>⚙️ <b>Open & free</b></td><td>Built in Rust + Swift, released as a free community project.</td></tr>
-      </table>
-    </section>
+  <h2>Join the Waitlist</h2>
+  <div class="cta">
+    <p>
+      Join the waitlist to get early access to AppVolume.<br>
+      You’ll receive updates, early builds, and opportunities to share feedback that shapes the app.
+    </p>
+    <form action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="22d502cc-b38c-417a-a826-2115ca3179af"/>
+      <input type="email" name="email" placeholder="you@example.com" required/>
+      <button type="submit">Join Now</button>
+    </form>
+    <p style="font-size:0.8rem;margin-top:0.6rem;opacity:0.7;">No spam. Unsubscribe anytime.</p>
+  </div>
 
-    <section>
-      <h2>📬 Get Notified When It’s Ready</h2>
-      <p>Want early access to the beta or project updates?<br>
-      Fill in your email below — we’ll only message you about important updates and releases.</p>
+  <h2>Core Features</h2>
+  <table>
+    <tr><th>Feature</th><th>Description</th></tr>
+    <tr><td>🎚 Per-app volume control</td><td>Independently adjust the volume of any app.</td></tr>
+    <tr><td>⚡ Low latency design</td><td>Minimal audio delay — ideal for music and creators.</td></tr>
+    <tr><td>🖥 Menu-bar interface</td><td>Quick access from the macOS menu bar with clean sliders.</td></tr>
+    <tr><td>💾 Persistent settings</td><td>Your per-app preferences are automatically saved and restored.</td></tr>
+  </table>
 
-      <form action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="22d502cc-b38c-417a-a826-2115ca3179af" />
-        <label for="email"><strong>Email address:</strong></label><br/>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required />
-        <button type="submit">Subscribe</button>
-      </form>
+  <h2>Tech Stack</h2>
+  <table>
+    <tr><th>Component</th><th>Purpose</th></tr>
+    <tr><td>🦀 Rust</td><td>Real-time audio mixing daemon for performance and safety.</td></tr>
+    <tr><td>🧱 Objective-C</td><td>Implements the Core Audio HAL virtual device driver.</td></tr>
+    <tr><td>🧩 Swift / SwiftUI</td><td>Creates a lightweight, native menu-bar interface.</td></tr>
+    <tr><td>⚙️ CoreAudio</td><td>Provides access to macOS’s low-level audio system.</td></tr>
+  </table>
+</main>
 
-      <p style="font-size:0.9rem;color:#666;"><em>We’ll never share your email. Unsubscribe anytime.</em></p>
-    </section>
-
-    <section>
-      <h2>👨‍💻 Tech Stack</h2>
-      <ul>
-        <li>🦀 <strong>Rust</strong> — real-time audio mixing daemon</li>
-        <li>🧱 <strong>Objective-C</strong> — Core Audio HAL virtual driver</li>
-        <li>🧩 <strong>Swift / SwiftUI</strong> — menu-bar user interface</li>
-        <li>⚙️ <strong>CoreAudio</strong> — native macOS sound framework</li>
-        <li>🪶 <strong>Web3Forms</strong> — simple, privacy-friendly email form backend</li>
-      </ul>
-    </section>
-  </main>
-
-  <footer>
-    <p>💙 PerApp Mixer is an open project by <strong>brute4</strong> — built for everyone who wants simple, reliable per-app volume control on macOS.</p>
-  </footer>
-
+<footer>
+  <p>AppVolume is an open project by <strong>brute4</strong> — built for everyone who wants simple, reliable
+    per-app volume control on macOS.</p>
+  <p>© 2025 AppVolume. All rights reserved.</p>
+</footer>
 </body>
 </html>
