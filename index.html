@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PerApp Mixer for macOS</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 2rem 1rem;
+      background-color: #f9fafb;
+      color: #222;
+      line-height: 1.6;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.3rem;
+    }
+    h2 {
+      margin-top: 2rem;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 680px;
+      margin: 1rem auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    table th, table td {
+      border-bottom: 1px solid #eee;
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+    }
+    table tr:last-child td {
+      border-bottom: none;
+    }
+    main {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    form {
+      margin-top: 1rem;
+    }
+    input[type="email"] {
+      padding: 0.5em;
+      width: 240px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 0.5em;
+    }
+    button {
+      padding: 0.5em 1em;
+      margin-left: 0.5em;
+      background-color: #007aff;
+      color: white;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🔊 PerApp Mixer for macOS</h1>
+    <h3>Free, lightweight per-application volume control for everyone</h3>
+    <p><strong>Status:</strong> 🚧 In active development — join the waitlist below to get notified when the first beta drops.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>🎯 What is PerApp Mixer?</h2>
+      <p>
+        PerApp Mixer is a <strong>simple, fast, and low-latency audio mixer for macOS</strong>
+        that finally lets you control the volume of each app individually.
+        No subscriptions, no bloat — just clean, intuitive sound control right from your menu bar.
+      </p>
+      <p>
+        Whether you’re balancing background music with a video call,
+        turning down a noisy browser tab, or keeping notifications quiet while watching a movie —
+        <strong>PerApp Mixer</strong> gives you precise, per-app volume control that works the way it should.
+      </p>
+    </section>
+
+    <section>
+      <h2>✨ MVP Features (in development)</h2>
+      <table>
+        <tr><td>🎚 <b>Per-app volume & mute</b></td><td>Adjust and mute any app individually.</td></tr>
+        <tr><td>⚡ <b>Low latency</b></td><td>Designed for responsiveness — minimal delay between apps and output.</td></tr>
+        <tr><td>🎵 <b>App bypass</b></td><td>Keep certain apps (like DAWs or games) connected directly for zero latency.</td></tr>
+        <tr><td>🧠 <b>Smart detection</b></td><td>Shows only apps that are currently playing sound.</td></tr>
+        <tr><td>💾 <b>Persistent settings</b></td><td>Remembers your volume preferences per app.</td></tr>
+        <tr><td>🖥 <b>Menu-bar UI</b></td><td>One click to open, adjust sliders, and close — fast and unobtrusive.</td></tr>
+        <tr><td>🔌 <b>Virtual audio device</b></td><td>Appears in macOS System Settings → Sound → Output.</td></tr>
+        <tr><td>⚙️ <b>Open & free</b></td><td>Built in Rust + Swift, released as a free community project.</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>📬 Get Notified When It’s Ready</h2>
+      <p>Want early access to the beta or project updates?<br>
+      Fill in your email below — we’ll only message you about important updates and releases.</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="22d502cc-b38c-417a-a826-2115ca3179af" />
+        <label for="email"><strong>Email address:</strong></label><br/>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        <button type="submit">Subscribe</button>
+      </form>
+
+      <p style="font-size:0.9rem;color:#666;"><em>We’ll never share your email. Unsubscribe anytime.</em></p>
+    </section>
+
+    <section>
+      <h2>👨‍💻 Tech Stack</h2>
+      <ul>
+        <li>🦀 <strong>Rust</strong> — real-time audio mixing daemon</li>
+        <li>🧱 <strong>Objective-C</strong> — Core Audio HAL virtual driver</li>
+        <li>🧩 <strong>Swift / SwiftUI</strong> — menu-bar user interface</li>
+        <li>⚙️ <strong>CoreAudio</strong> — native macOS sound framework</li>
+        <li>🪶 <strong>Web3Forms</strong> — simple, privacy-friendly email form backend</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>💙 PerApp Mixer is an open project by <strong>brute4</strong> — built for everyone who wants simple, reliable per-app volume control on macOS.</p>
+  </footer>
+
+</body>
+</html>
